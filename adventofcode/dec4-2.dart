@@ -11,13 +11,13 @@ class Card {
 void main() {
   File file = new File('dec4.txt');
   List<String> lines = file.readAsLinesSync();
+  List<Card> cards = [];
 
   int toReturn = 0;
 
-  for (String line in lines) {
-    line = line.replaceAll("  ", " ");
-    int multiplier = 0;
-    List<int> winningNumbers = line
+  for (int i = 0; i < lines.length; i++) {
+    lines[i] = lines[i].replaceAll("  ", " ");
+    List<int> winningNumbers = lines[i]
         .split(" | ")[0]
         .split(":")[1]
         .trim()
@@ -25,22 +25,26 @@ void main() {
         .map((e) => int.parse(e))
         .toList();
 
-    List<int> numbers = line
+    List<int> numbers = lines[i]
         .split(" | ")[1]
         .split(" ")
         .map((e) => int.parse(e.trim()))
         .toList();
 
-    for (int number in numbers) {
-      if (winningNumbers.contains(number)) {
-        if (multiplier == 0) {
-          multiplier++;
-        } else {
-          multiplier *= 2;
-        }
+    cards.add(Card(i + 1, winningNumbers, numbers, 1));
+  }
+
+  for (int i = 0; i < cards.length; i++) {
+    int amountofMatches = 0;
+    for (int number in cards[i].realNumbers) {
+      if (cards[i].winningNumbers.contains(number)) {
+        amountofMatches++;
       }
     }
-    toReturn += multiplier;
+    for (int j = 1; j <= amountofMatches; j++) {
+      cards[i + j].multiplier += cards[i].multiplier;
+    }
+    toReturn += cards[i].multiplier;
   }
   print(toReturn);
 }
