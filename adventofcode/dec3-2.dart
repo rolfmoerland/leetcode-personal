@@ -74,7 +74,7 @@ int starSurroundedByText(
         // print("found number at $x, $y");
         // There is a number.
         int baseX = x;
-        int offset = 0;
+        //sint offset = 0;
         while (baseX > 0 &&
             lines[y][baseX - 1].codeUnits[0] >= 48 &&
             lines[y][baseX - 1].codeUnits[0] < 58) {

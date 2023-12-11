@@ -108,8 +108,8 @@ void main() {
     int minBlue = 0;
     int minGreen = 0;
 
-    String gamenrStr = game.split(":")[0];
-    int GameNr = int.parse(gamenrStr.split(" ")[1]);
+    //String gamenrStr = game.split(":")[0];
+    //int gameNr = int.parse(gamenrStr.split(" ")[1]);
 
     List<String> gameContent = game.split(":")[1].split(";");
 

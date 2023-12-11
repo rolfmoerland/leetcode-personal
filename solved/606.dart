@@ -25,11 +25,11 @@ class Solution {
         toReturn += "(";
         HandleNode(node.left);
       } else {
-        if (node!.right != null) {
+        if (node.right != null) {
           toReturn += "()";
         }
       }
-      if (node!.right != null) {
+      if (node.right != null) {
         toReturn += node.val.toString();
         toReturn += "(";
         HandleNode(node.right);
