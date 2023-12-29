@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 List<int> seeds = [];
+List<int> seedIds = [];
+
 List<List<int>> seedtoSoil = [];
 List<List<int>> soiltoFertilizer = [];
 List<List<int>> fertilizerToWater = [];
@@ -10,25 +13,11 @@ List<List<int>> temperatureToHumidity = [];
 List<List<int>> humidityToLocation = [];
 
 void fillDatabase() {
-  File file = File('dec5.txt');
+  File file = File('dec5exmp.txt');
   List<String> lines = file.readAsLinesSync();
-  List<int> seedIds = [];
   for (String seed in lines[0].substring(7).split(" ")) {
     seedIds.add(int.parse(seed));
   }
-
-  while (seedIds.length != 0) {
-    print("seedidslength = now ${seedIds.length}");
-    print("handling seed ${seedIds[0]}");
-    int baseid = seedIds[0];
-    for (int i = 0; i < seedIds[1]; i++) {
-      seeds.add(baseid + i);
-      
-    }
-    seedIds.removeAt(0);
-    seedIds.removeAt(0);
-  }
-  print(" seeds length = ${seeds.length}");
 
   void handleLine(String startswith, List<List<int>> destination) {
     lines.removeAt(0);
@@ -64,28 +53,31 @@ int getMapped(int number, List<List<int>> map) {
 }
 
 void main() {
-  List<int> locations = [];
   fillDatabase();
-  for (int seed in seeds) {
-    int location = getMapped(
-        getMapped(
-            getMapped(
-                getMapped(
-                    getMapped(
-                        getMapped(
-                            getMapped(seed, seedtoSoil), soiltoFertilizer),
-                        fertilizerToWater),
-                    waterToLight),
-                lightToTemperature),
-            temperatureToHumidity),
-        humidityToLocation);
-    print("location: ${location}");
-  }
-  int min = 0;
-  for (int location in locations) {
-    if (location < min) {
-      min = location;
+  print(seedIds);
+  int minLocation = pow(2, 53).toInt();
+  while (seedIds.isNotEmpty) {
+    int toGoTo = seedIds[0] + seedIds[1];
+    for (int i = seedIds[0]; i < toGoTo; i++) {
+      int location = getMapped(
+          getMapped(
+              getMapped(
+                  getMapped(
+                      getMapped(
+                          getMapped(getMapped(i, seedtoSoil), soiltoFertilizer),
+                          fertilizerToWater),
+                      waterToLight),
+                  lightToTemperature),
+              temperatureToHumidity),
+          humidityToLocation);
+
+      if (location < minLocation) {
+        minLocation = location;
+      }
     }
+    seedIds.removeAt(0);
+    seedIds.removeAt(0);
+    print(seedIds.length);
   }
-  print(min);
+  print(minLocation);
 }
