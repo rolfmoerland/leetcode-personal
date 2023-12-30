@@ -1,7 +1,6 @@
 //import 'dart:math';
 
 import 'dart:collection';
-import 'dart:math';
 
 void main() {
   FoodRatings foodRatings = new FoodRatings(
